@@ -177,7 +177,7 @@ var Player = {
                     if (! self.paused()) {
                         self.pause();
                     }
-                    self.current_dir = self.base_dir + '/' + directory.entry;
+                    self.current_dir = self.current_dir + '/' + directory.entry;
                     self.setupTracksAndDirectories();
                 });
 
