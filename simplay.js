@@ -153,7 +153,7 @@ var Player = {
                         inner.entry = entry;
                         inner.idx = idx;
                         inner.onclick = function() {
-                            onclick(a);
+                            onclick(inner);
                         };
                     }
 
