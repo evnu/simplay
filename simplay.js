@@ -167,6 +167,14 @@ var Player = {
                 });
     },
 
+    'changeToDirectory': function(self, dir) {
+        if (! self.paused()) {
+            self.pause();
+        }
+        self.current_dir = dir;
+        self.setupTracksAndDirectories();
+    },
+
     // List the directories under current_dir and associate each directory with an onclick
     // handler which allows descending into that directory.
     'setupDirectories': function() {
@@ -174,11 +182,7 @@ var Player = {
         this.listEntries(this.divs.directories, this.directories,
                 // descend into a subdirectory
                 function (directory) {
-                    if (! self.paused()) {
-                        self.pause();
-                    }
-                    self.current_dir = self.current_dir + '/' + directory.entry;
-                    self.setupTracksAndDirectories();
+                    self.changeToDirectory(self, self.current_dir + '/' + directory.entry);
                 });
 
         // allow jumping to base_dir and one dir up
@@ -197,13 +201,11 @@ var Player = {
                     this.divs.directories.firstChild);
 
             to_base.onclick = function() {
-                self.current_dir = self.base_dir;
-                self.setupTracksAndDirectories();
+                self.changeToDirectory(self, self.base_dir);
             };
 
             one_up.onclick = function() {
-                self.current_dir = popDirectory(self.current_dir);
-                self.setupTracksAndDirectories();
+                self.changeToDirectory(self, popDirectory(self.current_dir));
             };
         }
     },
