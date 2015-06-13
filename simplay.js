@@ -41,6 +41,7 @@ var Player = {
     'directories': undefined,
     'divs': {
         'player': document.getElementById('#player'),
+        'breadcrumb': document.getElementById('#breadcrumb'),
         'playing': document.getElementById('#playing'),
         'tracklist': document.getElementById('#tracklist'),
         'directories': document.getElementById('#directories'),
@@ -78,9 +79,14 @@ var Player = {
         this.divs.player.addEventListener('error', function() { self.nextTrack(); self.play(); });
     },
 
+    'setBreadcrumb': function() {
+        this.divs.breadcrumb.innerHTML = this.current_dir;
+    },
+
     'setupTracksAndDirectories': function() {
         this.emptyTracklist();
         this.emptyDirectories();
+        this.setBreadcrumb();
 
         var self = this;
         var req = new XMLHttpRequest();
