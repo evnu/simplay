@@ -137,26 +137,27 @@ var Player = {
         return filename.match(/(\.mp3)|(\.ogg)$/);
     },
 
-    // Helper for setupTracks and setupDirectories: display entries from arr under ol.
+    // Helper for setupTracks and setupDirectories: display entries from arr under ol by creating an
+    // li which contains elements of type innerElement (STRING).
     // If the callback onclick is provided, it is registered as the onclick handler of
     // each new element. Also, each new element is then provided with fields 'idx' and
     // 'entry', holding its index and element value.
-    'listEntries': function(ol, arr, onclick) {
+    'listEntries': function(ol, arr, innerElement, onclick) {
         arr.forEach(
                 function(entry, idx) {
                     var li = document.createElement('li');
+                    var inner = document.createElement(innerElement);
+                    inner.innerHTML = entry;
 
                     if (onclick) {
-                        li.entry = entry;
-                        li.idx = idx;
-                        li.onclick = function() {
-                            onclick(li);
+                        inner.entry = entry;
+                        inner.idx = idx;
+                        inner.onclick = function() {
+                            onclick(a);
                         };
                     }
 
-                    li.appendChild(
-                            document.createTextNode(entry)
-                            );
+                    li.appendChild(inner);
                     ol.appendChild(li);
                 });
     },
@@ -165,7 +166,7 @@ var Player = {
     // which allows clicking the track to play it.
     'setupTracks': function() {
         var self = this;
-        this.listEntries(this.divs.tracklist, this.tracks,
+        this.listEntries(this.divs.tracklist, this.tracks, 'a',
                 // play a track by clicking it
                 function(track) {
                     self.setTrack.call(self, track.idx);
@@ -185,7 +186,7 @@ var Player = {
     // handler which allows descending into that directory.
     'setupDirectories': function() {
         var self = this;
-        this.listEntries(this.divs.directories, this.directories,
+        this.listEntries(this.divs.directories, this.directories, 'a',
                 // descend into a subdirectory
                 function (directory) {
                     self.changeToDirectory(self, self.current_dir + '/' + directory.entry);
