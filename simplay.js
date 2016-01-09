@@ -42,7 +42,6 @@ var Player = {
     'divs': {
         'player': document.getElementById('#player'),
         'breadcrumb': document.getElementById('#breadcrumb'),
-        'playing': document.getElementById('#playing'),
         'tracklist': document.getElementById('#tracklist'),
         'directories': document.getElementById('#directories'),
         'next': document.getElementById('#next'),
@@ -74,8 +73,6 @@ var Player = {
                     }
                 });
 
-        this.divs.player.addEventListener('playing', function() { self.displayCurrentTrack.call(self); });
-        this.divs.player.addEventListener('abort', function() { self.displayNoTrack.call(self); });
         this.divs.player.addEventListener('error', function() { self.nextTrack(); self.play(); });
     },
 
@@ -217,18 +214,6 @@ var Player = {
         }
     },
 
-    'displayTrack': function(trackName) {
-        this.divs.playing.innerHTML = trackName;
-    },
-
-    'displayCurrentTrack': function() {
-        this.displayTrack(this.tracks[this.current_track]);
-    },
-
-    'displayNoTrack': function() {
-        this.displayTrack('');
-    },
-
     'toPath': function(idx) {
         return this.current_dir + '/' + this.tracks[idx];
     },
@@ -260,10 +245,28 @@ var Player = {
         this.current_track = idx;
         this.divs.player.src = this.toPath(idx);
 
+        this.clearHighlight();
+        this.highlightTrack(idx);
+
         if (! paused) {
             this.play();
         }
     },
+
+    'trackNodes': function() {
+        return this.divs.tracklist.childNodes;
+    },
+
+    'clearHighlight': function() {
+        var trackNodes = this.trackNodes();
+        for (i = 0; i < trackNodes.length; i++) {
+            trackNodes[i].className = '';
+        }
+    },
+
+    'highlightTrack': function(idx) {
+        this.trackNodes()[idx].className = 'current';
+    }
 };
 
 Player.setup();
