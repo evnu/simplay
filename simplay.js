@@ -92,7 +92,7 @@ var Player = {
         req.onload = function() {
             self.doSetupAfterRequest.call(self, req);
         };
-        req.open("GET", this.current_dir, true);
+        req.open('GET', this.current_dir, true);
         req.send();
     },
 
@@ -185,7 +185,7 @@ var Player = {
         var self = this;
         this.listEntries(this.divs.directories, this.directories, 'a',
                 // descend into a subdirectory
-                function (directory) {
+                function(directory) {
                     self.changeToDirectory(self, self.current_dir + '/' + directory.entry);
                 });
 
