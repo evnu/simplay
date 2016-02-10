@@ -131,7 +131,7 @@ var Player = {
     },
 
     'matchFileExtension': function(filename) {
-        return filename.match(/(\.mp3)|(\.ogg)$/);
+        return filename.match(/(\.mp3)|(\.ogg)$/i);
     },
 
     // Helper for setupTracks and setupDirectories: display entries from arr under ol by creating an
