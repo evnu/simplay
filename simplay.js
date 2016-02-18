@@ -39,6 +39,7 @@ var Player = {
     'current_track': undefined, // integer
     'tracks': undefined,
     'directories': undefined,
+    'erroneous_tracks': {}, // per directory: reset on new directory or on roll-over
     'divs': {
         'player': document.getElementById('#player'),
         'breadcrumb': document.getElementById('#breadcrumb'),
@@ -73,7 +74,11 @@ var Player = {
                     }
                 });
 
-        this.divs.player.addEventListener('error', function() { self.nextTrack(); self.play(); });
+        this.divs.player.addEventListener('error', function() {
+            self.erroneous_tracks[self.current_track] = true;
+            self.nextTrack();
+            self.play();
+        });
     },
 
     'setBreadcrumb': function() {
@@ -122,6 +127,7 @@ var Player = {
                     }
                 });
 
+        this.erroneous_tracks = {};
         this.setupTracks();
         this.setupDirectories();
 
@@ -231,7 +237,16 @@ var Player = {
     },
 
     'nextTrack': function() {
-        this.setTrack((this.current_track + 1) % this.tracks.length);
+        var next_track = (this.current_track + 1) % this.tracks.length;
+        if (next_track == 0) {
+            if (Object.keys(this.erroneous_tracks).length == this.tracks.length) {
+                // Abort: all tracks where erroneous!
+                return;
+            } else {
+                this.erroneous_tracks = {};
+            }
+        }
+        this.setTrack(next_track);
     },
 
     'previousTrack': function() {
