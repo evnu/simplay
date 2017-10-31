@@ -221,7 +221,7 @@ var Player = {
     },
 
     'toPath': function(idx) {
-        return this.current_dir + '/' + this.tracks[idx];
+        return this.current_dir + '/' + encodeURIComponent(this.tracks[idx]);
     },
 
     'play': function() {
