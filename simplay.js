@@ -117,9 +117,7 @@ var Player = {
         JSON.parse(req.responseText).forEach(
                 function(entry) {
                     if (entry.type === 'file') {
-                        if (self.matchFileExtension(entry.name)) {
-                            self.tracks.push(entry.name);
-                        }
+			self.tracks.push(entry.name);
                     } else if (entry.type === 'directory') {
                         self.directories.push(entry.name);
                     } else {
@@ -134,10 +132,6 @@ var Player = {
         if (this.tracks.length > 0) {
             this.setTrack(0);
         }
-    },
-
-    'matchFileExtension': function(filename) {
-        return filename.match(/(\.mp3)|(\.ogg)$/i);
     },
 
     // Helper for setupTracks and setupDirectories: display entries from arr under ol by creating an
